@@ -1,0 +1,151 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+</head>
+
+
+<body>
+	<form>
+		a:<br>
+		<input type="number" id="a">
+		<br>
+		b:<br>
+		<input type="number" id="b">
+		<br>
+		c:<br>
+		<input type="number" id="c">
+		<br>
+	</form>
+	<button onclick="quad_equation()">Consult Quadratic Equation</button>
+</body>
+
+<script>
+
+function get_nums(){
+	var a = parseFloat(document.getElementById("a").value);
+	var b = parseFloat(document.getElementById("b").value);
+	var c = parseFloat(document.getElementById("c").value);
+	return [a,b,c];
+}
+
+function reduce(numerator,denominator){
+  var gcd = function gcd(a,b){
+    return b ? gcd(b, a%b) : a;
+  };
+  gcd = gcd(numerator,denominator);
+  return [numerator/gcd, denominator/gcd];
+}
+
+function lgst_sqr_fac(n){
+	for (i=n/2; i > 0; i--){
+		t_sqrt = Math.pow(i,0.5);
+		if (n % i == 0 && t_sqrt == parseInt(t_sqrt)){
+			return i;
+		}
+	}
+	return 0;
+}
+
+// case 0: no square root, just number
+// case 1: no number, just square root
+// case 2: number and square root
+
+function sqrt_mgmt(nums){
+	var sqrt_val = (Math.pow(nums[1],2)-4*nums[0]*nums[2]);
+	var sqrt = Math.pow(sqrt_val,0.5);
+	if (sqrt == parseInt(sqrt)){
+		return [0, sqrt];
+	}
+
+	out_num = lgst_sqr_fac(sqrt_val);
+
+	if (out_num == 0){
+		return [1, sqrt_val];
+	}
+	else{
+		return [2, Math.pow(out_num,0.5),sqrt_val/out_num];
+	}
+}
+
+//case 0: whole number
+//case 1: fraction
+
+function frac_mgmt(nums,sqrt){
+	b = nums[1];
+	num1 = sqrt[1]-b;
+	num2 = -sqrt[1]-b;
+	den = 2*nums[0];
+	if (num1 % den == 0){
+		sol1 = [0,num1/den];
+	}
+	else{
+		frac = reduce(num1,den);
+		sol1 = [1, frac[0],frac[1]];
+	}
+	if (num2 % den == 0){
+		sol2 = [0,num2/den];
+	}
+	else{
+		frac = reduce(num2,den);
+		sol2 = [1, frac[0],frac[1]];
+	}
+	return [sol1, sol2];
+}
+
+
+function no_sqrt_mgmt(frac){
+	if (frac[0][0] == 0){
+		sol1 = (frac[0][1]).toString();
+	}
+	else{
+		sol1 = (frac[0][1]).toString() + "/" + (frac[0][2]).toString();
+	}
+	if (frac[1][0] == 0){
+		sol2 = (frac[1][1]).toString();
+	}
+	else{
+		sol2 = (frac[1][1]).toString() + "/" + (frac[1][2]).toString();
+	}
+	return [sol1,sol2];
+}
+
+
+function main_mgmt(nums){
+	
+	sqrt = sqrt_mgmt(nums);
+	if (sqrt[0] == 0){
+		frac = frac_mgmt(nums,sqrt);
+		solutions = no_sqrt_mgmt(frac);
+	}
+	return solutions;
+}
+
+
+
+
+//alert("hey");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function quad_equation() {
+	nums = get_nums();
+	alert(main_mgmt(nums));
+}
+
+
+</script>
+
+</html>
