@@ -111,12 +111,20 @@ function no_sqrt_mgmt(frac){
 }
 
 
+function only_sqrt(nums, sqrt){
+	// FINISH THIS FUNCTION
+}
+
+
 function main_mgmt(nums){
 	
 	sqrt = sqrt_mgmt(nums);
 	if (sqrt[0] == 0){
 		frac = frac_mgmt(nums,sqrt);
 		solutions = no_sqrt_mgmt(frac);
+	}
+	if (sqrt[0] == 1){
+		solutions = only_sqrt(nums, sqrt);
 	}
 	return solutions;
 }
