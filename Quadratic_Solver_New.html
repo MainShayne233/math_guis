@@ -3,27 +3,10 @@
 
 <head>
 
-<style>
-   .mymenu{
-      list-style:none; 
-   }
-   .mymenu li{
-      display:inline;
-      etc
-   }
-</style>
 
 
 
-
-<script type="text/x-mathjax-config"> 
-    MathJax.Hub.Config({ 
-        "HTML-CSS": { scale: 200, linebreaks: false }, 
-        SVG: { linebreaks: false }, 
-        displayAlign: "left" });
-</script>
-
-
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
 <script type="text/javascript"
   src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
@@ -34,21 +17,15 @@
 
 <body>
 
+<form>
+	<input type="number" id="a"> \(x^2+\)
+	<input type="number" id="b"> \(x+\)
+	<input type="number" id="c">
+	<br>
+</form>
+<button onclick="quad_equation()">Consult Quadratic Equation</button>
 
-
-
-
-	<form>
-		<input type="number" id="a"> $$x^2$$
-		<input type="number" id="b">
-		<input type="number" id="c">
-		<br>
-	</form>
-	<button onclick="quad_equation()">Consult Quadratic Equation</button>
-
-
-
-<p class="mathjax" id="solution">
+<p class="mathjax" id="solutions">
 
 </p>
 
@@ -215,7 +192,10 @@ function sol_string(sol,which){
 	if (sol[3] == -1){
 		has_i = "i";
 	}
-	if (which == 1){
+	if (which == 1 && sol[0] == 0){
+		op = "";
+	}
+	else if (which == 1){
 		op = "+";
 	}
 	else if (which == -1){
@@ -225,30 +205,67 @@ function sol_string(sol,which){
 	if (sol[0] == 0 && (sol[1] == 0 || sol[2] == 0)){
 		return "$$0$$";
 	}
-	//just fraction
-	else if (sol[0] != 0 && sol[1] == 0 && sol[2] == 0 && sol[4] != 0 && sol[4] != 1){
-		return "$$\\frac{" + sol[0].toString() + "}{" + sol[4].toString() + "}" + has_i + "$$";
-	}
 	//just whole number
 	else if (sol[0] != 0 && sol[1] == 0 && sol[2] == 0 && sol[4] == 1){
 		return "$$" + sol[0].toString() + has_i + "$$";
 	}
+	//just fraction
+	else if (sol[0] != 0 && sol[1] == 0 && sol[2] == 0 && sol[4] != 0 && sol[4] != 1){
+		return "$$\\frac{" + sol[0].toString() + "}{" + sol[4].toString() + "}" + has_i + "$$";
+	}
+	//just square root
+	else if (sol[0] == 0 && sol[1] == 1 && sol[2] > 1 && sol[4] == 1){
+		return "$$" + op + "\\sqrt{" + sol[2].toString() + "}" + has_i + "$$";
+	}
+	//square root over denominator
+	else if (sol[0] == 0 && sol[1] == 1 && sol[2] > 1 && sol[4] != 1){
+		return "$$\\frac{" + op + "\\sqrt{" + sol[2] + "}" + has_i + "}{" + sol[4].toString() + "}$$";
+	}
+	//coe and square
+	else if(sol[0] == 0 && sol[1] != 1 && sol[2] != 1 && sol[4] == 1){
+		return "$$" + op + sol[1].toString() + "\\sqrt{" + sol[2].toString() + "}" + has_i + "$$";
+	}
+	//coe and square over denominator
+	else if(sol[0] == 0 && sol[1] != 1 && sol[2] != 1 && sol[4] == 1){
+		return "$$\\frac{" + op + sol[1].toString + "\\sqrt{" + sol[2].toString() + "}" + has_i + "}{" + sol[4] + "}$$";
+	}
+	//number + just square root
+	else if (sol[0] != 0 && sol[1] == 1 && sol[2] > 1 && sol[4] == 1){
+		return "$$" + sol[0].toString() + op + "\\sqrt{" + sol[2].toString() + "}" + has_i + "$$";
+	}
+		//number + just i
+	else if (sol[0] != 0 && sol[1] == 1 && sol[2] == 1 && sol[4] == 1){
+		return "$$" + sol[0].toString() + op + has_i + "$$";
+	}
 	//number + just square root over den
-	// -1 1 17 1 2
-	//\frac{-1+\sqrt{17}}{2}
 	else if (sol[0] != 0 && sol[1] == 1 && sol[2] != 0 && sol[4] != 0 && sol[4] != 1){
 		return "$$\\frac{" + sol[0].toString() + op + "\\sqrt{" + sol[2].toString() + "}" + has_i + "}{" + sol[4].toString() + "}$$";
 	}
-	//coe and square
-	//0, 4, 3, 1, 1
+	// number + just i over den
+	else if (sol[0] != 0 && sol[1] == 1 && sol[2] == 1 && sol[4] != 1){
+		return "$$\\frac{" + sol[1].toString() + op + has_i + "}{" + sol[4] + "}$$";
+	}
+	//number + coe sqrt
+	else if (sol[0] != 0 && sol[1] != 1 && sol[2] != 1 && sol[4] == 1){
+		return "$$" + sol[0].toString() + op + sol[1].toString() + "\\sqrt{" + sol[2].toString() + "}" + has_i + "$$";
+	}
+	//num + coe i
 	
-	else if(sol[0] == 0 && sol[1] != 1 && sol[2] != 1 && sol[4] == 1){
-		if (which == 1){
-			op = "";
-		}
-		return "$$" + op + sol[1].toString() + "\\sqrt{" + sol[2].toString() + "}" + has_i + "$$";
+	else if (sol[0] != 0 && sol[1] != 1 && sol[2] == 1 && sol[4] == 1){
+		return "$$" + sol[0].toString() + op + sol[1].toString() + has_i + "$$";
 	}
 
+	// num + coe sqrt over den
+	else if (sol[0] != 0 && sol[1] != 1 && sol[2] != 1 && sol[4] != 1){
+		return "$$\\frac{" + sol[0].toString() + op + sol[1].toString() + "\\sqrt{" + sol[2].toString() + "}" + has_i + "}{" + sol[4].toString() + "}$$"; 
+	}
+	
+	//num + coe i over den
+	else if (sol[0] != 0 && sol[1] != 1 && sol[2] == 1 && sol[4] != 1){
+		return "$$\\frac{" + sol[0].toString() + op + sol[1].toString() + has_i + "}{" + sol[4].toString() + "}$$"; 
+	}
+
+	
 }
 
 
@@ -260,11 +277,11 @@ function quad_equation() {
 	var sqrt_prop = sqrt_properties(sqrt);
 	var sol1 = sol_form(nums,sqrt_prop,1);	
 	var sol2 = sol_form(nums,sqrt_prop,-1);
+	alert(sol1);
+	alert(sol2);
 	var sol1_string = sol_string(sol1,1);
 	var sol2_string = sol_string(sol2,-1);
-	//alert(sol1_string);
-	//alert(sol2_string);
-	document.getElementById("solution").innerHTML = "Soluton 1:" + sol1_string + "Solution 2: " + sol2_string;
+	document.getElementById("solutions").innerHTML = "Soluton 1:" + sol1_string + "Solution 2: " + sol2_string;
 	MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
 	
 }
