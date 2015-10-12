@@ -52,6 +52,7 @@ function neg_pos_zero(sqrt){
 	return 1;
 }
 
+
 function is_sqr(n){
 	if (Math.pow(n,0.5) == parseInt(Math.pow(n,0.5))){
 		return true;
@@ -92,6 +93,7 @@ function sqrt_properties(sqrt){
 	return sqrt_prop;
 }
 
+
 function gcd(values){
 	var largest = 0;
 	for (i = 0; i < values.length; i++){
@@ -110,7 +112,6 @@ function gcd(values){
 		if (flag == 0){
 			return i;
 		}
-      alert(i);
 	}
 	return 1;
 }
@@ -130,6 +131,7 @@ function sol_form(nums,sqrt_prop,which){
 	form[2] = sqrt_prop[1][1];
 	form[3] = sqrt_prop[0];
 	form[4] = nums[0]*2;
+	//if the whole square root thing is just 0
 	if (form[3] == 0){
 		form[1] = 0;
 		form[2] = 0;
@@ -137,13 +139,15 @@ function sol_form(nums,sqrt_prop,which){
 		form[0] /= div;
 		form[4] /= div;
 	}
+	//if there is a mixed whole number and square root
 	else if(form[1] > 1 && form[2] > 1){
 		div = gcd([form[0], form[1], form[4]]);
 		form[0] /= div;
 		form[1] /= div;
 		form[4] /= div;
 	}
-	else if (form[1] > 1 && form[2] == 1){
+	//if there is just a whole number on the right, and no i
+	else if (form[1] > 1 && form[2] == 1 && form[3] == 1){
 		if (which == 1){
 			w_val = form[0] + form[1];
 		}
@@ -151,12 +155,25 @@ function sol_form(nums,sqrt_prop,which){
 			w_val = form[0] - form[1];
 		}
 		div = gcd([w_val, form[4]]);
-		//this is the part where you are making it so its an improper fraction and shit
+		form[0] = w_val / div;
+		form[4] /= div;
+		form[1] = 0;
+		form[2] = 0;
+		form[3] = 0;
 	}
+	//if there is just a whole number on the right, and an i
+	else if (form[1] > 1 && form[2] == 1 && form[3] == -1){
+		div = gcd([form[0],form[1],form[4]])
+		form[0] /= div;
+		form[1] /= div;
+		form[4] /= div;
+	}
+	//if there is just a square root on the right
+	else if (form[1] == 1 && form[2] > 1){
+		//no change, no reducing
+	}
+	return form;
 }
-
-
-
 
 
 
@@ -165,7 +182,11 @@ function quad_equation() {
 	var nums = get_nums();
 	var sqrt = inner_sqrt_value(nums);
 	var sqrt_prop = sqrt_properties(sqrt);
-	alert(sqrt_prop);
+	var sol1 = sol_form(nums,sqrt_prop,1);	
+	var sol2 = sol_form(nums,sqrt_prop,-1);
+	alert(sol1);
+	alert(sol2);
+
 }
 
 
