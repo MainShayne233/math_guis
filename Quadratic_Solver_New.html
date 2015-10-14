@@ -258,6 +258,10 @@ function sol_string(sol,which){
 	}
 	//just fraction
 	else if (sol[0] != 0 && sol[1] == 0 && sol[2] == 0 && sol[4] != 0 && sol[4] != 1){
+		if (sol[0] < 0 && sol[4] < 0){
+			sol[0]*=-1;
+			sol[4]*=-1;
+		}
 		return "\\(\\frac{" + sol[0].toString() + "}{" + sol[4].toString() + "}" + has_i + "\\)";
 	}
 	//just square root
@@ -388,10 +392,12 @@ function quad_equation() {
 		var sqrt_prop = sqrt_properties(sqrt);
 		var sol1 = sol_form(nums,sqrt_prop,1);	
 		var sol2 = sol_form(nums,sqrt_prop,-1);
+		alert(sol1);
+		alert(sol2);
 		var sol1_string = sol_string(sol1,1);
 		var sol2_string = sol_string(sol2,-1);
 		if (sol1_string == sol2_string){
-			document.getElementById("solutions").innerHTML = "<br>Soluton: \\(x=\\)" + sol1_string;
+			document.getElementById("solutions").innerHTML = "<br>Soluton: \\(x = \\)" + sol1_string;
 		MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
 		}
 		else{
