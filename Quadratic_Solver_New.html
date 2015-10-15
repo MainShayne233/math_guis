@@ -262,6 +262,10 @@ function sol_string(sol,which){
 			sol[0]*=-1;
 			sol[4]*=-1;
 		}
+		alert(sol);
+		if (sol[4] == 1 || sol[4] == -1){
+			return "\\(" + (sol[0]*sol[4]).toString() + has_i + "\\)";
+		}
 		return "\\(\\frac{" + sol[0].toString() + "}{" + sol[4].toString() + "}" + has_i + "\\)";
 	}
 	//just square root
@@ -357,15 +361,15 @@ function ax_b(nums){
 function not_quad(nums){
 	if (nums[1] == 0){
 		if (nums[2] == 0){
-			return "Looks like you entered all zeros. Good for you, but this doesn't concern the quadratic formula. However, the equation will hold true for all \\(x\\)";
+			return "Looks like you entered all zeros. Good for you, but this doesn't concern the quadratic formula. However, the equation \\(0=0\\) will hold true for all \\(x\\).";
 		}
-		return "Do you see what you did there? You entered zeroes for everything except the constant. Did you do that on purpose? Regardless, the equation won't be true for any \\(x\\), because \\(" + nums[2].toString() + "\\neq 0\\), no matter what \\(x\\) is";
+		return "Do you see what you did there? You entered zeroes for everything except the constant. Did you do that on purpose? Regardless, the equation won't be true for any \\(x\\), because \\(" + nums[2].toString() + "\\neq 0\\), no matter what \\(x\\) is.";
 	}
 	if (nums[2] == 0){
-		return "You do realize this is just \\(" + nums[1].toString() + "x=0\\), right? It's plain to see that the equation will be true when, and only when, \\(x=0\\)";
+		return "You do realize this is just \\(" + nums[1].toString() + "x=0\\), right? It's plain to see that the equation will be true when, and only when, \\(x=0\\).";
 	}
 	var sol = ax_b(nums);
-	return "You plugged in a \\(0\\) for the coeffecient of \\(x^2\\). That's fine, but an equation in this form does not concern the quadratic formula. Despite that, we can still solve for x, and in this case, \\(x=" + sol + "\\)";
+	return "You plugged in a \\(0\\) for the coeffecient of \\(x^2\\). That's fine, but an equation in this form does not concern the quadratic formula. Despite that, we can still solve for x, and in this case, \\(x=" + sol + "\\).";
 
 }
 
@@ -392,8 +396,7 @@ function quad_equation() {
 		var sqrt_prop = sqrt_properties(sqrt);
 		var sol1 = sol_form(nums,sqrt_prop,1);	
 		var sol2 = sol_form(nums,sqrt_prop,-1);
-		alert(sol1);
-		alert(sol2);
+		//alert(sol1 + sol2);
 		var sol1_string = sol_string(sol1,1);
 		var sol2_string = sol_string(sol2,-1);
 		if (sol1_string == sol2_string){
