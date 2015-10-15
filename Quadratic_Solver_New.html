@@ -205,7 +205,7 @@ function sol_form(nums,sqrt_prop,which){
 		form[4] /= div;
 	}
 	//if there is just a whole number on the right, and no i
-	else if (form[1] > 1 && form[2] == 1 && form[3] == 1){
+	else if (form[1] > 0 && form[2] == 1 && form[3] == 1){
 		if (which == 1){
 			w_val = form[0] + form[1];
 		}
@@ -252,7 +252,7 @@ function sol_string(sol,which){
 	if (sol[0] == 0 && (sol[1] == 0 || sol[2] == 0)){
 		return "\\(0\\)";
 	}
-	//just whole number
+	//just whole number where b isn't 0
 	else if (sol[0] != 0 && sol[1] == 0 && sol[2] == 0 && sol[4] == 1){
 		return "\\(" + sol[0].toString() + has_i + "\\)";
 	}
@@ -262,7 +262,6 @@ function sol_string(sol,which){
 			sol[0]*=-1;
 			sol[4]*=-1;
 		}
-		alert(sol);
 		if (sol[4] == 1 || sol[4] == -1){
 			return "\\(" + (sol[0]*sol[4]).toString() + has_i + "\\)";
 		}
@@ -374,7 +373,7 @@ function not_quad(nums){
 }
 
 function nan_input(nums){
-	return "You left one or more of the input boxes empty. We won't get anywhere if you hold out on me like this.";
+	return "You left one or more of the input boxes empty, or put in invalid data. We won't get anywhere if you hold out on me like this.";
 }
 
 
@@ -396,7 +395,6 @@ function quad_equation() {
 		var sqrt_prop = sqrt_properties(sqrt);
 		var sol1 = sol_form(nums,sqrt_prop,1);	
 		var sol2 = sol_form(nums,sqrt_prop,-1);
-		//alert(sol1 + sol2);
 		var sol1_string = sol_string(sol1,1);
 		var sol2_string = sol_string(sol2,-1);
 		if (sol1_string == sol2_string){
